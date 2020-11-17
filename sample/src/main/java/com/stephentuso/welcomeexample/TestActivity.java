@@ -1,6 +1,6 @@
 package com.stephentuso.welcomeexample;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.v7.app.AppCompatActivity;
 
 /**
  * Blank activity used by instrumented tests

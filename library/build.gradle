@@ -1,28 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'jacoco-android'
 
 android {
-    compileSdkVersion sdkVersion.compile
-    buildToolsVersion buildToolsVer
-
-    if (!deploying) {
-        publishNonDefault true
-    }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion sdkVersion.min
-        targetSdkVersion sdkVersion.target
-        versionCode Integer.parseInt(VERSION_CODE)
-        versionName VERSION_NAME
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            testCoverageEnabled true
-        }
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
 
     sourceSets {
@@ -32,35 +18,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    compile support.annotations
-    compile support.v4
-    compile support.appcompat
-    compile support.preference
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.preference:preference:1.1.1'
 }
 
-apply from: '../gradle/bintray.gradle'
-
-task welcomeBintrayUpload(type: GradleBuild) {
-    tasks = ['compileDebugSources', 'generatePomFileForMavenJavaPublication', 'publishToMavenLocal', 'bintrayUpload']
-    startParameter.projectProperties = [deploying: true]
-}
-preBuild.mustRunAfter welcomeBintrayUpload
-
-configure(welcomeBintrayUpload) {
-    group = 'Publishing'
-    description = 'Upload task for welcome-android'
-}
-
-task generatePublicXml(type: Exec) {
-    workingDir 'src/main/res-public'
-    commandLine 'bash', '-c', 'export PATH="$PATH:/usr/local/bin"; pubxml'
-    ignoreExitValue true
-}
-
-// Don't run pubxml task on Windows
-if (! System.getProperty('os.name').toLowerCase().contains('windows')) {
-    preBuild.dependsOn generatePublicXml
-}

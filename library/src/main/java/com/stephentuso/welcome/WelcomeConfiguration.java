@@ -2,10 +2,11 @@ package com.stephentuso.welcome;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.AnimRes;
-import android.support.annotation.ColorRes;
-import android.support.annotation.LayoutRes;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.AnimRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.LayoutRes;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by stephentuso on 11/15/15.
@@ -286,7 +287,8 @@ public class WelcomeConfiguration {
      *
      * @return animation resource id
      */
-    public @AnimRes int getExitAnimation() {
+    public @AnimRes
+    int getExitAnimation() {
         return builder.exitAnimationResId;
     }
 
